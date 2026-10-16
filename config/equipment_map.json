@@ -1,0 +1,63 @@
+{
+  "variable_to_equipment_type": {
+    "ph": [
+      "PH",
+      "AP",
+      "BP"
+    ],
+    "acid_flow_l_h": [
+      "AP",
+      "PH"
+    ],
+    "base_flow_l_h": [
+      "BP",
+      "PH"
+    ],
+    "temperature_k": [
+      "TT",
+      "TCV"
+    ],
+    "cooling_water_l_h": [
+      "TCV"
+    ],
+    "heating_water_l_h": [
+      "TCV",
+      "TT"
+    ],
+    "sugar_feed_l_h": [
+      "FP"
+    ],
+    "substrate_g_l": [
+      "FP"
+    ],
+    "aeration_rate_l_h": [
+      "MFC"
+    ],
+    "co2_offgas_pct": [
+      "MFC"
+    ],
+    "dissolved_o2_mg_l": [
+      "DO",
+      "MFC"
+    ],
+    "agitator_rpm": [
+      "AG"
+    ],
+    "air_head_pressure_bar": [
+      "PT"
+    ]
+  },
+  "equipment_types": {
+    "PH": "pH probe",
+    "AP": "Acid dosing pump",
+    "BP": "Base dosing pump",
+    "TT": "Temperature transmitter",
+    "TCV": "Cooling water control valve",
+    "FP": "Substrate feed pump",
+    "MFC": "Aeration mass flow controller",
+    "DO": "Dissolved oxygen probe",
+    "AG": "Agitator drive",
+    "PT": "Head pressure transmitter"
+  },
+  "calibration_interval_days": 90
+}
