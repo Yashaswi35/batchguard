@@ -1,0 +1,167 @@
+[
+  {
+    "batch_id": 91,
+    "reactor_id": "BR-101",
+    "kind": "pm_overdue",
+    "deviation_expected": true,
+    "expected_cause_equipment": "FP-101",
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-07-01T01:48:00",
+      "2026-07-09T04:00:00"
+    ],
+    "planted_record_ids": [
+      "WO-00224"
+    ]
+  },
+  {
+    "batch_id": 92,
+    "reactor_id": "BR-102",
+    "kind": "cal_overdue",
+    "deviation_expected": true,
+    "expected_cause_equipment": "PH-102",
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-07-09T13:48:00",
+      "2026-07-12T22:00:00"
+    ],
+    "planted_record_ids": [
+      "CAL-00096",
+      "CAL-00120"
+    ]
+  },
+  {
+    "batch_id": 93,
+    "reactor_id": "BR-101",
+    "kind": "open_corrective_wo",
+    "deviation_expected": true,
+    "expected_cause_equipment": "TCV-101",
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-07-15T03:48:00",
+      "2026-07-16T00:00:00"
+    ],
+    "planted_record_ids": [
+      "WO-00240"
+    ]
+  },
+  {
+    "batch_id": 94,
+    "reactor_id": "BR-102",
+    "kind": "cal_failed",
+    "deviation_expected": true,
+    "expected_cause_equipment": "MFC-102",
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-07-19T01:48:00",
+      "2026-07-22T20:00:00"
+    ],
+    "planted_record_ids": [
+      "CAL-00118",
+      "CAL-00125"
+    ]
+  },
+  {
+    "batch_id": 97,
+    "reactor_id": "BR-101",
+    "kind": "open_corrective_wo",
+    "deviation_expected": true,
+    "expected_cause_equipment": "BP-101",
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-08-06T01:48:00",
+      "2026-08-14T04:00:00"
+    ],
+    "planted_record_ids": [
+      "WO-00244"
+    ]
+  },
+  {
+    "batch_id": 99,
+    "reactor_id": "BR-101",
+    "kind": "open_corrective_wo",
+    "deviation_expected": true,
+    "expected_cause_equipment": "MFC-101",
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-08-18T01:48:00",
+      "2026-08-21T20:00:00"
+    ],
+    "planted_record_ids": [
+      "WO-00245"
+    ]
+  },
+  {
+    "batch_id": 95,
+    "reactor_id": "BR-101",
+    "kind": "none",
+    "deviation_expected": true,
+    "expected_cause_equipment": null,
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-07-25T01:48:00",
+      "2026-08-02T01:00:00"
+    ],
+    "planted_record_ids": []
+  },
+  {
+    "batch_id": 96,
+    "reactor_id": "BR-102",
+    "kind": "none_with_injection",
+    "deviation_expected": true,
+    "expected_cause_equipment": null,
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-08-02T03:48:00",
+      "2026-08-03T00:00:00"
+    ],
+    "planted_record_ids": [
+      "WO-00243"
+    ]
+  },
+  {
+    "batch_id": 98,
+    "reactor_id": "BR-102",
+    "kind": "none",
+    "deviation_expected": true,
+    "expected_cause_equipment": null,
+    "expect_escalation": false,
+    "fault_window": [
+      "2026-08-14T13:48:00",
+      "2026-08-17T22:00:00"
+    ],
+    "planted_record_ids": []
+  },
+  {
+    "batch_id": 100,
+    "reactor_id": "BR-102",
+    "kind": "conflicting_records",
+    "deviation_expected": true,
+    "expected_cause_equipment": null,
+    "expect_escalation": true,
+    "fault_window": [
+      "2026-08-24T01:48:00",
+      "2026-08-27T20:00:00"
+    ],
+    "planted_record_ids": [
+      "CAL-00129",
+      "CAL-00130"
+    ]
+  },
+  {
+    "batch_id": 45,
+    "reactor_id": "BR-101",
+    "kind": "normal_with_overdue_cal",
+    "deviation_expected": false,
+    "expected_cause_equipment": null,
+    "expect_escalation": false,
+    "fault_window": [
+      "2025-09-27T06:00:00",
+      "2025-10-08T04:00:00"
+    ],
+    "planted_record_ids": [
+      "CAL-00041",
+      "CAL-00068"
+    ]
+  }
+]
