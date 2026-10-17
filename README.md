@@ -4,7 +4,9 @@
 
 When a fermentation batch leaves its normal operating envelope, a GMP quality team has to investigate: what deviated, when, whether an instrument was out of calibration or under repair, and which regulations apply. BatchGuard does the evidence gathering and drafts the investigation summary. A qualified person approves it. The model never decides on its own.
 
-[![CI](https://github.com/Yashaswi35/batchguard/actions/workflows/ci.yml/badge.svg)](https://github.com/Yashaswi35/batchguard/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/Yashaswi35/batchguard/actions/workflows/ci.yml/badge.svg)](https://github.com/Yashaswi35/batchguard/actions/workflows/ci.yml) [![Image](https://img.shields.io/badge/image-ghcr.io%2Fyashaswi35%2Fbatchguard-blue?logo=docker)](https://github.com/Yashaswi35/batchguard/pkgs/container/batchguard)
+
+**CI/CD:** every pull request runs lint, 41 tests, the LLM eval gate and a Docker smoke test. Every merge to `main` that passes is published automatically as a versioned container image (continuous delivery).
 
 ## Results
 
@@ -143,7 +145,7 @@ Databricks: open the repo as a Git folder, run `python -m lakehouse.export_for_d
 - [Runbook](docs/runbook.md): run, change safely, monitor, recover
 - [Data dictionary](docs/data_dictionary.md): every gold table and column
 - [Human review in Power Automate](docs/power_automate.md): the approval flow, payload and controls
-- [Decision log](docs/decision_log.md): 20 dated design decisions with the numbers behind them
+- [Decision log](docs/decision_log.md): 22 dated design decisions with the numbers behind them
 
 ## Repository
 
