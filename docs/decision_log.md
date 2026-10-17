@@ -51,3 +51,12 @@ The versioner endpoint returns HTTP 406 unless the client sends `Accept-Encoding
 
 **D16. Model: gemini-3.8-flash.**
 gemini-2.5-flash returned 404 for new API keys. The model name is set in one place (`agent/llm.py`, overridable with `GEMINI_MODEL`) and is part of the replay key, so changing it forces responses to be re-recorded.
+
+**D17. Prompt v1 over-escalated symptom twins. Fixed in v2.**
+On the first live eval, Gemini correctly named no cause for batches 95, 96 and 98 but escalated all three, because rule 2 ("no cause is a valid conclusion") conflicted with rule 5 ("escalate when the evidence cannot support a conclusion"). Task success was 88% overall and 70% on faulted batches, with grounding, citation validity and safe failure at 100%. Rule 5 now limits escalation to conflicting or missing records and states that finding no equipment cause is a complete conclusion. v1 results are kept in `evals/results/gemini_prompt_v1.json`.
+
+**D18. The verifier earns its place.**
+On batch 100 Gemini's first draft named a cause despite conflicting PASS and FAIL calibration records. The verifier rejected it, the retry escalated correctly. Without the verifier this would have been a confident wrong answer.
+
+**D19. Free tier quota is 20 requests per model per day.**
+A full eval is about 11 calls. The project moved to the paid tier (well under $0.10 per eval run). CI never calls the API, since it replays recordings.
