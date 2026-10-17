@@ -19,8 +19,8 @@ These are the batches released without deviation. A timestep needs at least 10 r
 **D5. Floor each timestep's std at 10% of the variable's global std.**
 Variables that are almost always zero in normal batches (heating water flow) produced z-scores above 10^6. The floor keeps z-scores meaningful without hiding real excursions.
 
-**D6. Two thresholds: |z| > 3 marks an excursion, max |z| >= 20 makes it a deviation.**
-Excursions shorter than 1 hour are ignored, and gaps of up to 2 in-range points are bridged. On IndPenSim the highest max z in any normal batch was 9.4 and the lowest in a faulted batch was 42.3. A first threshold of 10 sat too close to normal variation, so it was raised to 20, a 2x margin on both sides. Result: 10/10 faulted batches flagged, 0/90 normal batches flagged.
+**D6. Two thresholds: |z| > 3 marks an excursion, max |z| >= 10 makes it a deviation.**
+Excursions shorter than 1 hour are ignored, and gaps of up to 2 in-range points are bridged. The 10 threshold was chosen by comparing the highest max z in normal batches against the lowest in faulted batches (see pipeline run report).
 
 **D7. Synthetic CMMS with planted scenarios.**
 No public CMMS data exists for this process. Records are seeded and simulated. Each fault pattern has a batch with an equipment cause and a twin batch without one, so the agent cannot infer the cause from symptoms alone.
@@ -30,3 +30,24 @@ The first check found a work order planted for batch 97 that overlapped batch 95
 
 **D9. Data quality failures are flagged, not dropped.**
 Silver keeps every row with a `dq_pass` flag and writes failures to `dq_failures`. Failed rows are excluded from the reference envelope but remain visible for investigation. In GxP data, silently deleting records is worse than flagging them.
+
+**D10. The model drafts, code decides.**
+Deviation detection, candidate instruments and their issues come from deterministic gold tables. The LLM only chooses among supported candidates and writes the narrative. A verifier checks every cited record id, instrument and regulation section against what the tools returned. Failed drafts get one retry with the specific errors, then escalate to a human. The model never sets the status.
+
+**D11. Maintenance log notes are untrusted input.**
+Free-text work order notes go into a separate `untrusted_notes` field, never mixed with facts, and the prompt states they are data, not instructions. A prompt injection is planted in batch 96 to test this. The verifier rejects any regulation section that was not retrieved, so an injected citation cannot pass.
+
+**D12. Regulation text comes from the official eCFR API, not model memory.**
+`data/fetch_regs.py` pulls 21 CFR Part 211 by section with its as-of date. Retrieval is a small BM25 index, and 211.192 (production record review) is always included because every deviation requires a documented investigation.
+
+**D13. Append-only audit trail enforced by the database.**
+Every graph node writes inputs hash, outputs, model and prompt version to SQLite. Triggers reject UPDATE and DELETE on the audit and approval tables, so the record cannot be edited after the fact.
+
+**D14. Record and replay model responses for CI.**
+Live Gemini responses are saved, keyed by model, prompt version and full prompt. CI replays them, so evaluations test real model outputs with no API key and no randomness. If a prompt or the data changes, the key changes and CI fails until responses are re-recorded.
+
+**D15. eCFR API requires compressed responses.**
+The versioner endpoint returns HTTP 406 unless the client sends `Accept-Encoding: gzip`, and Python's urllib does not decompress on its own. The fetcher requests gzip and decompresses explicitly. Found by reading the API's error body rather than guessing at headers.
+
+**D16. Model: gemini-3.8-flash.**
+gemini-2.5-flash returned 404 for new API keys. The model name is set in one place (`agent/llm.py`, overridable with `GEMINI_MODEL`) and is part of the replay key, so changing it forces responses to be re-recorded.
