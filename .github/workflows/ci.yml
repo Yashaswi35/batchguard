@@ -41,3 +41,29 @@ jobs:
       - name: Container logs
         if: always()
         run: docker logs bg | tail -20
+
+  publish:
+    # continuous delivery: only on main, only after tests and the container smoke test pass
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test, docker]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/yashaswi35/batchguard:latest
+            ghcr.io/yashaswi35/batchguard:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/Yashaswi35/batchguard
+            org.opencontainers.image.description=BatchGuard governed deviation-investigation agent API
