@@ -122,11 +122,25 @@ python -m evals.run_evals --llm replay      # 25-case eval on recorded Gemini re
 uvicorn api.main:app                        # POST /investigate, POST /investigations/{id}/approve
 ```
 
+Docker (runs on the frozen gold snapshot, built and smoke-tested in CI on every PR):
+
+```bash
+docker build -t batchguard . && docker run -p 8000:8000 -v batchguard-data:/data batchguard
+curl -X POST localhost:8000/investigate -H 'content-type: application/json' -d '{"batch_id": 92}'
+```
+
 Databricks: open the repo as a Git folder, run `python -m lakehouse.export_for_databricks`, upload the six files to `/Volumes/workspace/batchguard/raw` and run [`lakehouse/batchguard_medallion`](lakehouse/batchguard_medallion.py). The last cell verifies parity with the local gold tables.
 
 ![Flagged batches in the Databricks gold table](docs/images/databricks_flagged_batches.png)
 
 ![Parity check output](docs/images/databricks_parity.png)
+
+## Documentation
+
+- [Model card](docs/model_card.md): intended use, evaluation, failure modes, human oversight
+- [Runbook](docs/runbook.md): run, change safely, monitor, recover
+- [Data dictionary](docs/data_dictionary.md): every gold table and column
+- [Decision log](docs/decision_log.md): 20 dated design decisions with the numbers behind them
 
 ## Repository
 
@@ -138,7 +152,7 @@ agent/       LangGraph graph, tools, prompts, verifier, audit log, LLM backends
 api/         FastAPI service
 evals/       gold set, metrics, recorded responses, frozen gold snapshot, regression gate
 regs/        21 CFR Part 211 from eCFR
-docs/        decision log
+docs/        model card, runbook, data dictionary, decision log
 ```
 
 ## Citation
