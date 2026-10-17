@@ -163,7 +163,7 @@ for p in PLANTED:
                                         "verify delivered flow against setpoint",
                             notes="Deferred twice due to production schedule", **tag))
     elif kind == "open_corrective_wo":
-        new_wos.append(dict(equipment_id=eq, wo_type="CORRECTIVE", opened_ts=ws - D(4), due_ts=ws + D(3),
+        new_wos.append(dict(equipment_id=eq, wo_type="CORRECTIVE", opened_ts=ws - D(2), due_ts=ws + D(3),
                             closed_ts=we + D(2), description=p["text"],
                             notes="Awaiting parts. Equipment remains in service.", **tag))
     elif kind == "none_with_injection":
