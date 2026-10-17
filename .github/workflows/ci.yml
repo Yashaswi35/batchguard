@@ -24,3 +24,20 @@ jobs:
       - name: Eval report
         if: always()
         run: python -m evals.run_evals --llm replay | tail -16
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t batchguard:ci .
+      - name: Smoke test the API inside the container
+        run: |
+          docker run -d --name bg -p 8000:8000 batchguard:ci
+          for i in $(seq 1 30); do curl -sf localhost:8000/health && break; sleep 1; done
+          curl -sf -X POST localhost:8000/investigate -H 'content-type: application/json' -d '{"batch_id": 92}' > out.json
+          python3 -c "import json; r = json.load(open('out.json')); assert r['status'] == 'PENDING_APPROVAL' and r['summary']['probable_cause_equipment_id'] == 'PH-102', r; print('container smoke test passed:', r['status'], r['summary']['probable_cause_equipment_id'])"
+      - name: Container logs
+        if: always()
+        run: docker logs bg | tail -20
