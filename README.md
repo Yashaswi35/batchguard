@@ -49,8 +49,9 @@ flowchart LR
   B --> BR
   GO --> I
   R --> RR
-  H --> API[FastAPI + append-only audit log]
-  X --> API
+  H --> PA[Power Automate approval<br/>named reviewer decides]
+  X --> PA
+  PA --> API[FastAPI + append-only audit log]
 ```
 
 | Stage | What it does |
@@ -63,7 +64,7 @@ flowchart LR
 | **Retrieve regs** | BM25 over 21 CFR 211. 211.192 (production record review) is always included |
 | **Draft** | Gemini writes a JSON summary from tool facts only. Maintenance notes go in a separate `untrusted_notes` field |
 | **Verify** | Code checks every cited record id, instrument and CFR section. One retry with the exact errors, then escalation |
-| **Human review** | `PENDING_APPROVAL` or `ESCALATED`. Only a named reviewer can approve, once, with a comment |
+| **Human review** | `PENDING_APPROVAL` or `ESCALATED`. A Power Automate flow sends the reviewer a real approval request and posts the decision back. Only a named reviewer can decide, once, with a comment, using a shared approval token |
 
 ## Design principles
 
@@ -71,6 +72,7 @@ flowchart LR
 - **Labels never leave bronze.** Fault labels are dropped in silver, so neither the gold tables nor the agent can see the answer.
 - **Untrusted text stays untrusted.** Free-text work order notes are passed as data with an explicit instruction not to follow them. A prompt injection is planted in batch 96 and is ignored.
 - **Every step is on the record.** Each graph node writes an input hash, output, model and prompt version to SQLite. Database triggers reject `UPDATE` and `DELETE`.
+- **Every merge ships, but only if it passes.** CI lints, runs 41 tests and the eval gate, builds the Docker image and smoke-tests the API inside it. Only then does CD publish the image to `ghcr.io/yashaswi35/batchguard`.
 - **Evaluations gate releases.** CI replays recorded Gemini responses on a frozen gold snapshot, so evals run on every PR with no API key and no randomness. If the prompt or data changes, the replay key changes and CI fails until responses are re-recorded.
 
 ## What is real and what is synthetic
@@ -107,7 +109,7 @@ Full reasoning in [`docs/decision_log.md`](docs/decision_log.md).
 ```bash
 git clone https://github.com/Yashaswi35/batchguard && cd batchguard
 pip install -r requirements.txt
-python -m pytest -q                         # 37 tests incl. eval gate, no data or API key needed
+python -m pytest -q                         # 41 tests incl. eval gate, no data or API key needed
 ```
 
 Full pipeline (needs the IndPenSim CSV from [Mendeley Data](https://data.mendeley.com/datasets/npt257bjxn)):
@@ -122,10 +124,10 @@ python -m evals.run_evals --llm replay      # 25-case eval on recorded Gemini re
 uvicorn api.main:app                        # POST /investigate, POST /investigations/{id}/approve
 ```
 
-Docker (runs on the frozen gold snapshot, built and smoke-tested in CI on every PR):
+Docker (runs on the frozen gold snapshot, built and smoke-tested in CI, published on every merge to main):
 
 ```bash
-docker build -t batchguard . && docker run -p 8000:8000 -v batchguard-data:/data batchguard
+docker run -p 8000:8000 -v batchguard-data:/data ghcr.io/yashaswi35/batchguard:latest
 curl -X POST localhost:8000/investigate -H 'content-type: application/json' -d '{"batch_id": 92}'
 ```
 
@@ -140,6 +142,7 @@ Databricks: open the repo as a Git folder, run `python -m lakehouse.export_for_d
 - [Model card](docs/model_card.md): intended use, evaluation, failure modes, human oversight
 - [Runbook](docs/runbook.md): run, change safely, monitor, recover
 - [Data dictionary](docs/data_dictionary.md): every gold table and column
+- [Human review in Power Automate](docs/power_automate.md): the approval flow, payload and controls
 - [Decision log](docs/decision_log.md): 20 dated design decisions with the numbers behind them
 
 ## Repository

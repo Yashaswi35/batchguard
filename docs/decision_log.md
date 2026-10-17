@@ -63,3 +63,9 @@ A full eval is about 11 calls. The project moved to the paid tier (well under $0
 
 **D20. Databricks port verified by parity, not assumed.**
 The PySpark notebook imports thresholds from `pipeline/config.py` and its last cell compares every gold table with the frozen local snapshot. First run: 582 events (62 significant) in both, all 100 batches and 1,000 equipment rows match. Spark specifics handled: nanosecond parquet timestamps exported as text and cast in silver, NaN converted to null (Spark orders NaN above every number), `try_divide` for ANSI mode. The folder is named `lakehouse/` because a local `databricks` package would shadow the Databricks SDK.
+
+**D21. Human review runs in Power Automate.**
+When a run needs review, the API calls a Power Automate flow over HTTP. The flow sends a Microsoft 365 approval, waits for the decision and posts it back to `/investigations/{run_id}/approve` with the reviewer's account name and comment. The callback must carry `X-Approval-Token`, checked with a constant-time compare. A failed notification is logged in the audit trail and never fails the investigation. First live run: approved by a named reviewer, audit trail ends with `notify_reviewer` and `human_review`.
+
+**D22. Settings load before the app reads them.**
+The API read its environment before `.env` was loaded, so the flow was silently off. `.env` now loads before `create_app`. A variable already exported in the shell still wins over `.env` (a stale placeholder URL sent the first callbacks to a host that did not exist), so the runbook says to unset old exports before starting the server.
