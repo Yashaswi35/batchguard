@@ -60,3 +60,6 @@ On batch 100 Gemini's first draft named a cause despite conflicting PASS and FAI
 
 **D19. Free tier quota is 20 requests per model per day.**
 A full eval is about 11 calls. The project moved to the paid tier (well under $0.10 per eval run). CI never calls the API, since it replays recordings.
+
+**D20. Databricks port verified by parity, not assumed.**
+The PySpark notebook imports thresholds from `pipeline/config.py` and its last cell compares every gold table with the frozen local snapshot. First run: 582 events (62 significant) in both, all 100 batches and 1,000 equipment rows match. Spark specifics handled: nanosecond parquet timestamps exported as text and cast in silver, NaN converted to null (Spark orders NaN above every number), `try_divide` for ANSI mode. The folder is named `lakehouse/` because a local `databricks` package would shadow the Databricks SDK.
