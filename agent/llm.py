@@ -32,14 +32,24 @@ class GeminiLLM:
         self.name = self.model
         self.client = genai.Client(api_key=key)
 
-    def generate(self, system, user):
-        from google.genai import types
-        resp = self.client.models.generate_content(
-            model=self.model, contents=user,
-            config=types.GenerateContentConfig(system_instruction=system, temperature=0,
-                                               response_mime_type="application/json",
-                                               response_schema=DraftSummary))
-        return resp.text
+    def generate(self, system, user, max_tries=6):
+        import time
+
+        from google.genai import errors, types
+        for attempt in range(max_tries):
+            try:
+                resp = self.client.models.generate_content(
+                    model=self.model, contents=user,
+                    config=types.GenerateContentConfig(system_instruction=system, temperature=0,
+                                                       response_mime_type="application/json",
+                                                       response_schema=DraftSummary))
+                return resp.text
+            except errors.APIError as e:
+                # free tier rate limits (429) and transient server errors: back off and retry
+                if getattr(e, "code", None) in (429, 500, 503) and attempt < max_tries - 1:
+                    time.sleep(min(60, 5 * 2 ** attempt))
+                    continue
+                raise
 
 
 class RecordingLLM:

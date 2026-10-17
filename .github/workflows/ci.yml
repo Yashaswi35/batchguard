@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: pip install -r requirements.txt
+      - name: Lint
+        run: ruff check .
+      - name: Unit, API and eval regression tests
+        # evals replay recorded Gemini responses on a frozen gold snapshot: no API key, no randomness
+        run: pytest -q
+      - name: Eval report
+        if: always()
+        run: python -m evals.run_evals --llm replay | tail -16

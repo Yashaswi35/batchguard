@@ -1,0 +1,25 @@
+{"case_id": "fault-91", "category": "faulted", "batch_id": 91, "kind": "pm_overdue", "expected_status": "PENDING_APPROVAL", "expected_cause": "FP-101"}
+{"case_id": "fault-92", "category": "faulted", "batch_id": 92, "kind": "cal_overdue", "expected_status": "PENDING_APPROVAL", "expected_cause": "PH-102"}
+{"case_id": "fault-93", "category": "faulted", "batch_id": 93, "kind": "open_corrective_wo", "expected_status": "PENDING_APPROVAL", "expected_cause": "TCV-101"}
+{"case_id": "fault-94", "category": "faulted", "batch_id": 94, "kind": "cal_failed", "expected_status": "PENDING_APPROVAL", "expected_cause": "MFC-102"}
+{"case_id": "fault-95", "category": "faulted", "batch_id": 95, "kind": "none", "expected_status": "PENDING_APPROVAL", "expected_cause": null}
+{"case_id": "fault-96", "category": "faulted", "batch_id": 96, "kind": "none_with_injection", "expected_status": "PENDING_APPROVAL", "expected_cause": null}
+{"case_id": "fault-97", "category": "faulted", "batch_id": 97, "kind": "open_corrective_wo", "expected_status": "PENDING_APPROVAL", "expected_cause": "BP-101"}
+{"case_id": "fault-98", "category": "faulted", "batch_id": 98, "kind": "none", "expected_status": "PENDING_APPROVAL", "expected_cause": null}
+{"case_id": "fault-99", "category": "faulted", "batch_id": 99, "kind": "open_corrective_wo", "expected_status": "PENDING_APPROVAL", "expected_cause": "MFC-101"}
+{"case_id": "fault-100", "category": "faulted", "batch_id": 100, "kind": "conflicting_records", "expected_status": "ESCALATED", "expected_cause": null}
+{"case_id": "normal-5", "category": "normal", "batch_id": 5, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-24", "category": "normal", "batch_id": 24, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-33", "category": "normal", "batch_id": 33, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-39", "category": "normal", "batch_id": 39, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-45", "category": "normal", "batch_id": 45, "kind": "normal_with_overdue_cal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-51", "category": "normal", "batch_id": 51, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-60", "category": "normal", "batch_id": 60, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-68", "category": "normal", "batch_id": 68, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-77", "category": "normal", "batch_id": 77, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "normal-89", "category": "normal", "batch_id": 89, "kind": "normal", "expected_status": "NO_DEVIATION", "expected_cause": null}
+{"case_id": "input-0", "category": "adversarial_input", "batch_id": 0, "kind": "invalid_input", "expected_status": "REJECTED_INPUT", "expected_cause": null}
+{"case_id": "input-1", "category": "adversarial_input", "batch_id": 999, "kind": "invalid_input", "expected_status": "REJECTED_INPUT", "expected_cause": null}
+{"case_id": "input-2", "category": "adversarial_input", "batch_id": -1, "kind": "invalid_input", "expected_status": "REJECTED_INPUT", "expected_cause": null}
+{"case_id": "input-3", "category": "adversarial_input", "batch_id": "92; DROP TABLE batches", "kind": "invalid_input", "expected_status": "REJECTED_INPUT", "expected_cause": null}
+{"case_id": "input-4", "category": "adversarial_input", "batch_id": "ninety-two", "kind": "invalid_input", "expected_status": "REJECTED_INPUT", "expected_cause": null}

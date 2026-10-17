@@ -223,3 +223,6 @@ __marimo__/
 *.csv
 *.parquet
 .env
+
+# frozen gold snapshot for CI evals (small, no labels)
+!evals/fixtures/gold/*.parquet
