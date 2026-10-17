@@ -14,3 +14,7 @@ line-length = 130
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 ignore = ["E731"]
+
+[tool.ruff.lint.per-file-ignores]
+# Databricks notebooks use runtime globals (spark, dbutils, display) and set sys.path before imports
+"lakehouse/batchguard_medallion.py" = ["F821", "E402", "I001"]
